@@ -27,10 +27,16 @@ var Yml Config
 
 // LoadConfig carrega a configuração do arquivo config.yaml.
 func LoadConfig() error {
-	data, err := os.ReadFile("config.yaml")
-	if err != nil {
-		return err
+	path := os.Getenv("CONFIG_PATH")
+	if path == "" {
+		path = "config.yaml"
 	}
+
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return fmt.Errorf("erro ao abrir config: %w", err)
+	}
+
 	return yaml.Unmarshal(data, &Yml)
 }
 
