@@ -1,10 +1,10 @@
 api:
-  host:   192.168.0.218
+  host:   189.19.139.230
   port: 8080
 
 sql:
-  host:   192.168.0.218
+  host: lapasta-d1.cn8egemossmh.us-east-2.rds.amazonaws.com
   port: 1433
-  database: LaPasta
-  username: dbservidor
-  password: dbservidor@lapasta
+  database: lapasta_d1
+  username: admin
+  password: lapasta2025
