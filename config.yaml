@@ -1,9 +1,10 @@
 api:
-  host: localhost
-  port: "8080"
+  host:   189.19.139.230
+  port: 8080
 
 sql:
-  host: localhost
-  port: "1433"  
-  database: "lapasta"  
-  integrated_security: true 
+  host: lapasta-d1.cn8egemossmh.us-east-2.rds.amazonaws.com
+  port: 1433
+  database: lapasta_d1
+  username: admin
+  password: lapasta2025

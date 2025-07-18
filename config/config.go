@@ -8,7 +8,6 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-// Config representa a estrutura do arquivo de configuração.
 type Config struct {
 	API struct {
 		Host string `yaml:"host,omitempty"`
@@ -20,21 +19,30 @@ type Config struct {
 		User     string `yaml:"username,omitempty"`
 		Password string `yaml:"password,omitempty"`
 	} `yaml:"sql,omitempty"`
+	AWS struct {
+		AccessKeyID     string `yaml:"access_key_id,omitempty"`
+		SecretAccessKey string `yaml:"secret_access_key,omitempty"`
+		Region          string `yaml:"region,omitempty"`
+		BucketName      string `yaml:"bucket_name,omitempty"`
+	} `yaml:"aws,omitempty"`
 }
 
-// Yml é a variável global que armazena a configuração carregada.
 var Yml Config
-
 // LoadConfig carrega a configuração do arquivo config.yaml.
 func LoadConfig() error {
-	data, err := os.ReadFile("config.yaml")
-	if err != nil {
-		return err
-	}
-	return yaml.Unmarshal(data, &Yml)
+    path := os.Getenv("CONFIG_PATH")
+    if path == "" {
+        path = "config.yaml"
+    }
+
+    data, err := os.ReadFile(path)
+    if err != nil {
+        return fmt.Errorf("erro ao abrir config: %w", err)
+    }
+
+    return yaml.Unmarshal(data, &Yml)
 }
 
-// CreateConfigFile cria o arquivo config.yaml se não existir.
 func CreateConfigFile() {
 	if _, err := os.Stat("config.yaml"); err == nil {
 		fmt.Println("O arquivo 'config.yaml' já existe. Deseja sobrescrever? (y/N)")
@@ -48,7 +56,6 @@ func CreateConfigFile() {
 	writeFile()
 }
 
-// writeFile escreve a configuração no arquivo config.yaml.
 func writeFile() {
 	data, err := yaml.Marshal(Yml)
 	if err != nil {

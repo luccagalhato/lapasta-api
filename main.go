@@ -2,18 +2,16 @@ package main
 
 import (
 	"flag"
-	"lapasta/api"
+	"log"
+
 	config "lapasta/config"
 	database "lapasta/database"
+	utils "lapasta/internal/Utils"
 	server "lapasta/server"
-	"log"
 )
 
-var createConfig bool
-var connectionLinx *database.SQLStr
-var err error
-
-func init() {
+func main() {
+	var createConfig bool
 	flag.BoolVar(&createConfig, "config", false, "create config.yaml file")
 	flag.Parse()
 
@@ -28,13 +26,11 @@ func init() {
 	}
 
 	log.Print("connecting sql ...")
-	connectionLinx, err = database.MakeSQL(config.Yml.SQL.Host, config.Yml.SQL.Port, config.Yml.SQL.User, config.Yml.SQL.Password)
+	connectionLinx, err := database.MakeSQL(config.Yml.SQL.Host, config.Yml.SQL.Port, config.Yml.SQL.User, config.Yml.SQL.Password)
 	if err != nil {
 		log.Fatal(err)
 	}
-}
 
-func main() {
-	api.SetSQLConn(connectionLinx)
+	utils.SetSQLConn(connectionLinx)
 	server.Controllers()
 }
